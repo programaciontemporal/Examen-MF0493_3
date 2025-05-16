@@ -1,52 +1,51 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Departamento')
+@section('title', 'Crear Nuevo Departamento')
 
 @section('content')
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Añadir Nuevo Departamento</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('departamentos.index') }}"> Volver</a>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Agregar Nuevo Departamento</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('departamentos.store') }}" method="POST">
+                            @csrf
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control @error('nombre') is-invalid @enderror"
+                                        id="nombre" name="nombre" value="{{ old('nombre') }}" required>
+                                    @error('nombre')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="ubicacion" class="form-label">Ubicación</label>
+                                    <input type="text" class="form-control @error('ubicacion') is-invalid @enderror"
+                                        id="ubicacion" name="ubicacion" value="{{ old('ubicacion') }}" required>
+                                    @error('ubicacion')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mt-4 d-flex justify-content-between">
+                                <a href="{{ route('departamentos.index') }}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left me-1"></i> Volver
+                                </a>
+                                <button type="submit" class="btn btn-dark">
+                                    <i class="bi bi-save me-1"></i> Guardar Departamento
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>¡Error!</strong> Hay problemas con tus datos de entrada.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('departamentos.store') }}" method="POST">
-        @csrf
-
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Nombre:</strong>
-                    <input type="text" name="nombre" class="form-control" placeholder="Nombre">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Ubicación:</strong>
-                    <input type="text" name="ubicacion" class="form-control" placeholder="Ubicación">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center mt-3">
-                <button type="submit" class="btn btn-success">Guardar</button>
-            </div>
-        </div>
-
-    </form>
-</div>
 @endsection

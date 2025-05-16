@@ -1,75 +1,77 @@
-{{-- Extiende el layout base --}}
 @extends('layouts.app')
 
-{{-- Define el título específico para esta página --}}
-@section('title', 'Crear Empleado - Examen MF0493_3')
+@section('title', 'Crear Nuevo Empleado')
 
-{{-- Define el contenido de la sección 'content' --}}
 @section('content')
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Añadir Nuevo Empleado</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('empleados.index') }}"> Volver</a>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Agregar Nuevo Empleado</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('empleados.store') }}" method="POST">
+                            @csrf
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="nombre" class="form-label">Nombre*</label>
+                                    <input type="text" class="form-control @error('nombre') is-invalid @enderror"
+                                        id="nombre" name="nombre" value="{{ old('nombre') }}" required>
+                                    @error('nombre')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email*</label>
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                        id="email" name="email" value="{{ old('email') }}" required>
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="dni" class="form-label">DNI*</label>
+                                    <input type="text" class="form-control @error('dni') is-invalid @enderror"
+                                        id="dni" name="dni" value="{{ old('dni') }}" required>
+                                    @error('dni')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="departamento_id" class="form-label">Departamento</label>
+                                    <select class="form-select @error('departamento_id') is-invalid @enderror"
+                                        id="departamento_id" name="departamento_id">
+                                        <option value="">Seleccione un departamento</option>
+                                        @foreach ($departamentos as $departamento)
+                                            <option value="{{ $departamento->id }}"
+                                                {{ old('departamento_id') == $departamento->id ? 'selected' : '' }}>
+                                                {{ $departamento->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('departamento_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mt-4 d-flex justify-content-between">
+                                <a href="{{ route('empleados.index') }}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left me-1"></i> Volver
+                                </a>
+                                <button type="submit" class="btn btn-dark">
+                                    <i class="bi bi-save me-1"></i> Guardar Empleado
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    @if ($errors->any())
-        <div class="alert alert-danger mt-3">
-            <strong>¡Error!</strong> Hay problemas con tus datos de entrada.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('empleados.store') }}" method="POST">
-        @csrf
-
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Nombre:</strong>
-                    <input type="text" name="nombre" class="form-control" placeholder="Nombre"
-                        value="{{ old('nombre') }}">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Email:</strong>
-                    <input type="email" name="email" class="form-control" placeholder="Email"
-                        value="{{ old('email') }}">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>DNI:</strong>
-                    <input type="text" name="dni" class="form-control" placeholder="DNI" value="{{ old('dni') }}">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Departamento:</strong>
-                    <select name="departamento_id" class="form-control">
-                        <option value="">Seleccione un Departamento</option>
-                        @foreach ($departamentos as $departamento)
-                            <option value="{{ $departamento->id }}"
-                                {{ old('departamento_id') == $departamento->id ? 'selected' : '' }}>
-                                {{ $departamento->nombre }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center mt-3">
-                <button type="submit" class="btn btn-success">Guardar</button>
-            </div>
-        </div>
-
-    </form>
 @endsection

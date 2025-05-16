@@ -4,98 +4,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Examen MF0493_3 - Antonio García Salinas')</title> {{-- Título dinámico --}}
-
+    <title>@yield('title', 'Gestión de Empleados')</title>
+    <!-- Bootstrap 5.3.6 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <!-- Bootstrap Icons 1.11.0 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    @stack('styles')
     <style>
-        /* Estilo para el hero con imagen de fondo */
+        body {
+            font-family: system-ui, sans-serif;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
         .hero {
-            background: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-            position: relative;
+            background: url('https://unsplash.com/photos/YvNiIyGdMfs/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzQ3Mzk0MTMzfA&force=true&w=1920n') no-repeat center center;
+            background-size: cover;
             color: white;
+            padding: 6rem 2rem;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2rem 1rem;
+            }
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 1;
+        .feature-card {
+            transition: transform 0.3s ease;
         }
 
-        /* Animaciones del original */
-        .nav-links a {
-            transition: all 0.3s ease;
+        .feature-card:hover {
+            transform: translateY(-5px);
         }
 
-        .nav-links a:hover {
-            color: var(--bs-warning);
+        footer {
+            background-color: #212529;
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .grabado {
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            background-color: #333;
+            letter-spacing: 1px;
         }
 
         .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2) !important;
-        }
-
-        .btn {
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .social-links a {
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--bs-warning);
+            max-width: 100%;
+            word-break: break-word;
         }
     </style>
 </head>
 
 <body>
-    <header class="bg-primary text-white py-4">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-dark">
-                <div class="container-fluid">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-briefcase me-2 fs-4 text-warning"></i>
-                        <h1><a href="{{ route('welcome') }}" class="text-white text-decoration-none">Examen MF0493_3 - Antonio García Salinas</a></h1>
-                    </div>
-                </div>
-            </nav>
+    <!-- Header -->
+    <header class="bg-dark text-white py-2">
+        <div class="container text-center">
+            <h1 class="h5 mb-0">@yield('header-title', 'Gestión de Empleados')</h1>
         </div>
     </header>
 
-    @yield('content')
-
-    <footer class="bg-dark text-white py-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <div class="d-flex flex-column align-items-center gap-3">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-briefcase me-2 text-warning"></i>
-                    <span class="h5 mb-0">Examen MF0493_3 - Antonio García Salinas</span>
-                </div>
+            <h2 class="h5 fw-bold">CRUD Empleados y Departamentos</h2>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('/') ? 'active' : '' }}"
+                            href="{{ route('welcome') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('empleados*') ? 'active' : '' }}"
+                            href="{{ route('empleados.index') }}">Empleados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('departamentos*') ? 'active' : '' }}"
+                            href="{{ route('departamentos.index') }}">Departamentos</a>
+                    </li>
+                </ul>
             </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main>
+        @yield('content')
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p class="mb-0">&copy; {{ date('Y') }} Gestión de Empleados. Proyecto Laravel 12.</p>
         </div>
     </footer>
 
+    <!-- JS Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
 </body>
 
 </html>
